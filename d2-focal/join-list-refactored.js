@@ -12,18 +12,24 @@
 // Write our function (we must define it too!) below
 const joinList = function (list) {
   if (list.length > 0) {
-    let result = ''
-
-    for (let i = 0; i < list.length; i++) {
-      if (i === list.length - 1) {
-        result += list[i]
-        return result
-      }
-
-      result += list[i] + ', '
-    }
+    return iterateList(list)
   }
   return ''
+}
+
+const iterateList = function (list) {
+  let result = ''
+
+  for (let i = 0; i < list.length; i++) {
+    if (i === list.length - 1) {
+      result += list[i]
+      return result
+    }
+
+    result += list[i] + ', '
+  }
+
+  return result
 }
 
 // Test / Driver Code below...
