@@ -1,3 +1,5 @@
+const inspect = require('util').inspect
+
 const data = {
   f01: {
     name: 'Alice',
@@ -31,24 +33,47 @@ const data = {
   }
 }
 
-const biggestFollower = function (input) {
-  let biggest = 0
+let result = []
 
-  for (const key of Object.keys(input)) {
-    if (input[key].follows.length > biggest) biggest = input[key].follows.length
+const flatten = function (array) {
+  for (let i = 0; i < array.length; i++) {
+    if (Array.isArray(array[i])) {
+      flatten(array[i])
+    } else {
+      result.push(array[i])
+    }
   }
 
-  return biggest
+  return result
+}
+
+const biggestFollower = function (input) {
+  let inputKeys = Object.keys(input)
+  let followers = []
+  let biggestFollower = {}
+
+  for (const key of inputKeys) {
+    followers.push(input[key].follows)
+  }
+
+  followers = flatten(followers)
+
+  for (const follow of followers) {
+    console.log(input[follow].name)
+    if (!biggestFollower[input[follow].name]) {
+      biggestFollower[input[follow].name] = 1
+    }
+
+    biggestFollower[input[follow].name] += 1
+  }
+
+  console.log(biggestFollower)
 }
 
 console.log(biggestFollower(data))
 
 const mostPopular = function (input) {
   let popular = ''
-
-  for (const key of Object.keys(input)) {
-    if (input[key].follows.length > biggest) biggest = input[key].follows.length
-  }
 
   return popular
 }
