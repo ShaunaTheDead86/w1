@@ -41,5 +41,3 @@ console.log(assertArraysEqual(results2, ['h', 'w']));
 const words3 = ['let\'s','map','some','words','together'];
 const results3 = map(words3, word => word[0]);
 console.log(assertArraysEqual(results3, ['l', 'm', 's', 'w', 't']));
-
-console.log("test");
