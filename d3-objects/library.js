@@ -38,7 +38,7 @@ const library = {
 
     for (const key of playlistKeys) {
       const name = input[key].name
-      const trackCount = input[key].trackLibrary.length
+      const trackCount = input[key].trackLibrary
 
       if (trackCount <= 1) {
         if (!results.key) {
@@ -75,9 +75,9 @@ const library = {
 
   printPlaylist: function (playlistId) {
     const playlistTracks = playlistId.trackLibrary
-    const tracks = library.printTracks(library.trackLibrary)
+    const tracks = this.printTracks(this.trackLibrary)
     const tracksKeys = Object.keys(tracks)
-    const results = { [playlistId.id]: library.printPlaylists(library.playlists)[playlistId.id] }
+    const results = { [playlistId.id]: this.printPlaylists(this.playlists)[playlistId.id] }
 
     for (const playlistKey of playlistTracks) {
       for (const trackKey of tracksKeys) {
@@ -93,9 +93,9 @@ const library = {
   },
 
   addTrackToPlaylist: function (trackId, playlistId) {
-    library.playlists[playlistId.id].trackLibrary.push(trackId.id)
+    this.playlists[playlistId.id].trackLibrary.push(trackId.id)
 
-    return library.playlists[playlistId.id].trackLibrary.sort()
+    return this.playlists[playlistId.id].trackLibrary.sort()
   },
 
   generateUid: function () {
@@ -103,47 +103,49 @@ const library = {
   },
 
   addTrack: function (name, artist, album) {
-    const newTrackIdNum = Object.keys(library.trackLibrary).length + 1
+    const newTrackIdNum = Object.keys(this.trackLibrary).length + 1
     let newTrackId = `t0${newTrackIdNum}`
 
     if (newTrackIdNum > 10 && newTrackIdNum <= 99) {
       newTrackId = `t${newTrackIdNum}`
     }
 
-    library.trackLibrary[newTrackId] = {
+    this.trackLibrary[newTrackId] = {
       id: newTrackId,
       name: name,
       artist: artist,
       album: album
     }
 
-    return library.trackLibrary
+    return this.trackLibrary
   },
 
   addPlaylist: function (name) {
-    const newPlaylistIdNum = Object.keys(library.playlists).length + 1
+    const newPlaylistIdNum = Object.keys(this.playlists).length + 1
     let newPlaylistId = `p0${newPlaylistIdNum}`
 
     if (newPlaylistIdNum > 10 && newPlaylistIdNum <= 99) {
       newPlaylistId = `p${newPlaylistIdNum}`
     }
 
-    library.playlists[newPlaylistId] = {
+    this.playlists[newPlaylistId] = {
       id: newPlaylistId,
       name: name,
       tracks: ['t04']
     }
 
-    return library.playlists
+    return this.playlists
   },
 
   printSearchResults: function (query) {
-    const tracks = library.trackLibrary
+    const tracks = this.trackLibrary
     const regexSearch = new RegExp(query, 'gi')
-    const results = library.searchObject(tracks, regexSearch)
+    const results = this.searchObject(tracks, regexSearch)
 
-    for (let i = 0; i < results.length; i++) {
-      results[i] = results[i].join(', ')
+    if (results.length > 0) {
+      for (let i = 0; i < results.length; i++) {
+        results[i] = results[i].join(', ')
+      }
     }
 
     return 'Found: ' + results.join(', ')
@@ -155,7 +157,10 @@ const library = {
 
     for (const key of objKeys) {
       if (typeof obj[key] === 'object') {
-        results.push(library.searchObject(obj[key], regex))
+        const searchResult = this.searchObject(obj[key], regex)
+        if (searchResult !== undefined && searchResult.length > 0) {
+          results.push(searchResult)
+        }
       }
       if (typeof obj[key] === 'string') {
         if (obj[key].search(regex) !== -1) {
@@ -167,3 +172,13 @@ const library = {
     return results
   }
 }
+
+console.log('printPlaylists: ', library.printPlaylists(library.playlists))
+console.log('printTracks: ', library.printTracks(library.trackLibrary))
+console.log('printPlayList: ', library.printPlaylist(library.playlists.p01))
+console.log('printPlayList: ', library.printPlaylist(library.playlists.p02))
+console.log('addTrackToPlaylist: ', library.addTrackToPlaylist(library.trackLibrary.t03, library.playlists.p01))
+console.log('addTrackToPlaylist: ', library.addTrackToPlaylist(library.trackLibrary.t02, library.playlists.p02))
+console.log('addTrack: ', library.addTrack('Blah Blah Blah', 'Bob Loblaw', 'Bob Loblaws Law Blog'))
+console.log('addPlaylist: ', library.addPlaylist('Bob Loblaws Greatest Hits'))
+console.log('printSearchResults: ', library.printSearchResults('code'))
