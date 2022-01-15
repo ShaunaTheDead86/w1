@@ -32,82 +32,82 @@ const library = {
     }
   },
 
-  printPlaylists: function (input) {
-    const playlistKeys = Object.keys(input)
-    const results = {}
+  printPlaylists: function(input) {
+    const playlistKeys = Object.keys(input);
+    const results = {};
 
     for (const key of playlistKeys) {
-      const name = input[key].name
-      const trackCount = input[key].trackLibrary
+      const name = input[key].name;
+      const trackCount = input[key].trackLibrary;
 
       if (trackCount <= 1) {
         if (!results.key) {
-          results[key] = `${name} - ${trackCount} track`
+          results[key] = `${name} - ${trackCount} track`;
         }
       }
 
       if (trackCount > 1) {
         if (!results.key) {
-          results[key] = `${name} - ${trackCount} tracks`
+          results[key] = `${name} - ${trackCount} tracks`;
         }
       }
     }
 
-    return results
+    return results;
   },
 
-  printTracks: function (input) {
-    const tracksKeys = Object.keys(input)
-    const results = {}
+  printTracks: function(input) {
+    const tracksKeys = Object.keys(input);
+    const results = {};
 
     for (const key of tracksKeys) {
-      const name = input[key].name
-      const artist = input[key].artist
-      const album = input[key].album
+      const name = input[key].name;
+      const artist = input[key].artist;
+      const album = input[key].album;
 
       if (!results[key]) {
-        results[key] = `${name} by ${artist} (${album})`
+        results[key] = `${name} by ${artist} (${album})`;
       }
     }
 
-    return results
+    return results;
   },
 
-  printPlaylist: function (playlistId) {
-    const playlistTracks = playlistId.trackLibrary
-    const tracks = this.printTracks(this.trackLibrary)
-    const tracksKeys = Object.keys(tracks)
-    const results = { [playlistId.id]: this.printPlaylists(this.playlists)[playlistId.id] }
+  printPlaylist: function(playlistId) {
+    const playlistTracks = playlistId.trackLibrary;
+    const tracks = this.printTracks(this.trackLibrary);
+    const tracksKeys = Object.keys(tracks);
+    const results = { [playlistId.id]: this.printPlaylists(this.playlists)[playlistId.id] };
 
     for (const playlistKey of playlistTracks) {
       for (const trackKey of tracksKeys) {
         if (playlistKey === trackKey) {
           if (!results[trackKey]) {
-            results[trackKey] = tracks[trackKey]
+            results[trackKey] = tracks[trackKey];
           }
         }
       }
     }
 
-    return results
+    return results;
   },
 
-  addTrackToPlaylist: function (trackId, playlistId) {
-    this.playlists[playlistId.id].trackLibrary.push(trackId.id)
+  addTrackToPlaylist: function(trackId, playlistId) {
+    this.playlists[playlistId.id].trackLibrary.push(trackId.id);
 
-    return this.playlists[playlistId.id].trackLibrary.sort()
+    return this.playlists[playlistId.id].trackLibrary.sort();
   },
 
-  generateUid: function () {
-    return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1)
+  generateUid: function() {
+    return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
   },
 
-  addTrack: function (name, artist, album) {
-    const newTrackIdNum = Object.keys(this.trackLibrary).length + 1
-    let newTrackId = `t0${newTrackIdNum}`
+  addTrack: function(name, artist, album) {
+    const newTrackIdNum = Object.keys(this.trackLibrary).length + 1;
+    let newTrackId = `t0${newTrackIdNum}`;
 
     if (newTrackIdNum > 10 && newTrackIdNum <= 99) {
-      newTrackId = `t${newTrackIdNum}`
+      newTrackId = `t${newTrackIdNum}`;
     }
 
     this.trackLibrary[newTrackId] = {
@@ -115,70 +115,70 @@ const library = {
       name: name,
       artist: artist,
       album: album
-    }
+    };
 
-    return this.trackLibrary
+    return this.trackLibrary;
   },
 
-  addPlaylist: function (name) {
-    const newPlaylistIdNum = Object.keys(this.playlists).length + 1
-    let newPlaylistId = `p0${newPlaylistIdNum}`
+  addPlaylist: function(name) {
+    const newPlaylistIdNum = Object.keys(this.playlists).length + 1;
+    let newPlaylistId = `p0${newPlaylistIdNum}`;
 
     if (newPlaylistIdNum > 10 && newPlaylistIdNum <= 99) {
-      newPlaylistId = `p${newPlaylistIdNum}`
+      newPlaylistId = `p${newPlaylistIdNum}`;
     }
 
     this.playlists[newPlaylistId] = {
       id: newPlaylistId,
       name: name,
       tracks: ['t04']
-    }
+    };
 
-    return this.playlists
+    return this.playlists;
   },
 
-  printSearchResults: function (query) {
-    const tracks = this.trackLibrary
-    const regexSearch = new RegExp(query, 'gi')
-    const results = this.searchObject(tracks, regexSearch)
+  printSearchResults: function(query) {
+    const tracks = this.trackLibrary;
+    const regexSearch = new RegExp(query, 'gi');
+    const results = this.searchObject(tracks, regexSearch);
 
     if (results.length > 0) {
       for (let i = 0; i < results.length; i++) {
-        results[i] = results[i].join(', ')
+        results[i] = results[i].join(', ');
       }
     }
 
-    return 'Found: ' + results.join(', ')
+    return 'Found: ' + results.join(', ');
   },
 
-  searchObject: function (obj, regex) {
-    const objKeys = Object.keys(obj)
-    const results = []
+  searchObject: function(obj, regex) {
+    const objKeys = Object.keys(obj);
+    const results = [];
 
     for (const key of objKeys) {
       if (typeof obj[key] === 'object') {
-        const searchResult = this.searchObject(obj[key], regex)
+        const searchResult = this.searchObject(obj[key], regex);
         if (searchResult !== undefined && searchResult.length > 0) {
-          results.push(searchResult)
+          results.push(searchResult);
         }
       }
       if (typeof obj[key] === 'string') {
         if (obj[key].search(regex) !== -1) {
-          results.push(obj[key])
+          results.push(obj[key]);
         }
       }
     }
 
-    return results
+    return results;
   }
-}
+};
 
-console.log('printPlaylists: ', library.printPlaylists(library.playlists))
-console.log('printTracks: ', library.printTracks(library.trackLibrary))
-console.log('printPlayList: ', library.printPlaylist(library.playlists.p01))
-console.log('printPlayList: ', library.printPlaylist(library.playlists.p02))
-console.log('addTrackToPlaylist: ', library.addTrackToPlaylist(library.trackLibrary.t03, library.playlists.p01))
-console.log('addTrackToPlaylist: ', library.addTrackToPlaylist(library.trackLibrary.t02, library.playlists.p02))
-console.log('addTrack: ', library.addTrack('Blah Blah Blah', 'Bob Loblaw', 'Bob Loblaws Law Blog'))
-console.log('addPlaylist: ', library.addPlaylist('Bob Loblaws Greatest Hits'))
-console.log('printSearchResults: ', library.printSearchResults('code'))
+console.log('printPlaylists: ', library.printPlaylists(library.playlists));
+console.log('printTracks: ', library.printTracks(library.trackLibrary));
+console.log('printPlayList: ', library.printPlaylist(library.playlists.p01));
+console.log('printPlayList: ', library.printPlaylist(library.playlists.p02));
+console.log('addTrackToPlaylist: ', library.addTrackToPlaylist(library.trackLibrary.t03, library.playlists.p01));
+console.log('addTrackToPlaylist: ', library.addTrackToPlaylist(library.trackLibrary.t02, library.playlists.p02));
+console.log('addTrack: ', library.addTrack('Blah Blah Blah', 'Bob Loblaw', 'Bob Loblaws Law Blog'));
+console.log('addPlaylist: ', library.addPlaylist('Bob Loblaws Greatest Hits'));
+console.log('printSearchResults: ', library.printSearchResults('code'));
