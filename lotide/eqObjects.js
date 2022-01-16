@@ -1,23 +1,28 @@
-const eqObjects = function(object1, object2) {
-  let object1Keys = Object.keys(object1);
-  let object2Keys = Object.keys(object2);
+// const assertEqual = require('./assertEqual.js');
+// const eqArrays = require('./eqArrays.js');
 
-  if (object1Keys.length !== object2Keys.length) return false;
+const eqObjects = function(obj1, obj2) {
+  const obj1Keys = Object.keys(obj1);
+  const obj2Keys = Object.keys(obj2);
 
-  const hasSameKey = function(obj, key) {
-    if (!obj[key]) return false;
+  if (obj1Keys.length !== obj2Keys.length) {
+    return false;
+  }
 
-    return true;
-  };
+  for (let i = 0; i < obj1.length; i++) {
+    if (obj1Keys[i] !== obj2Keys[i]) return false;
+  }
 
-  for (const key of object1Keys) {
-    if (Array.isArray(object1[key]) && Array.isArray([key])) {
-      if (!eqArrays(object1[key], object2[key])) return false;
+  for (const key in obj1) {
+    if (typeof obj1[key] === 'object' && typeof obj2[key] === 'object') {
+      if (!eqObjects(obj1[key],obj2[key])) {
+        return false;
+      }
     } else {
-      if (!assertEqual(object1[key], object2[key])) return false;
+      if (obj1[key] !== obj2[key]) {
+        return false;
+      }
     }
-
-    if (!hasSameKey(object2, key)) return false;
   }
 
   return true;
