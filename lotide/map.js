@@ -31,13 +31,3 @@ const map = function(array, callback) {
 
   return results;
 };
-
-const words = ['ground', 'control', 'to', 'major', 'tom'];
-const results1 = map(words, word => word[0]);
-console.log(assertArraysEqual(results1, ['g', 'c', 't', 'm', 't']));
-const words2 = ['hello','world'];
-const results2 = map(words2, word => word[0]);
-console.log(assertArraysEqual(results2, ['h', 'w']));
-const words3 = ['let\'s','map','some','words','together'];
-const results3 = map(words3, word => word[0]);
-console.log(assertArraysEqual(results3, ['l', 'm', 's', 'w', 't']));
