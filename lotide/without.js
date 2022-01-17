@@ -11,3 +11,5 @@ const without = function(source, remove) {
 
   return result;
 };
+
+module.exports = without;
