@@ -1,6 +1,8 @@
 const countLetters = require('../countLetters');
 const assertObjectsEqual = require('../assertObjectsEqual');
 
+console.log('testing assertObjectsEqual');
+
 assertObjectsEqual(countLetters('hello world'),{
   h:1,
   e:1,

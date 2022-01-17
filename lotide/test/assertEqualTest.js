@@ -1,4 +1,6 @@
 const assertEqual = require('../assertEqual');
 
-assertEqual("Lighthouse Labs", "Bootcamp");
+console.log('testing assertEqual');
+
+assertEqual("Lighthouse Labs", "Lighthouse Labs");
 assertEqual(1, 1);

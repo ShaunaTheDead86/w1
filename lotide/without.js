@@ -1,11 +1,9 @@
 const without = function(source, remove) {
-  let result = source.slice(0);
+  let result = [];
 
-  for (let i = 0; i < source.length; i++) {
-    for (let j = 0; j < remove.length; j++) {
-      if (source[i] === remove[j]) {
-        result.splice(i, 1);
-      }
+  for (const sourceWord of source) {
+    if (remove.every(e => e !== sourceWord)) {
+      result.push(sourceWord);
     }
   }
 

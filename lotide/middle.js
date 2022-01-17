@@ -1,4 +1,8 @@
 const middle = function(array) {
+  if (array.length === undefined) {
+    return [];
+  }
+
   if (array.length < 3) {
     return [];
   }

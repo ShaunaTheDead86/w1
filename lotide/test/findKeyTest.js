@@ -1,6 +1,8 @@
 const findKey = require('../findKey');
 const assertEqual = require('../assertEqual');
 
+console.log('testing findKey');
+
 assertEqual(findKey({
   "Blue Hill":{stars:1},
   "Akaleri":{stars:3},
